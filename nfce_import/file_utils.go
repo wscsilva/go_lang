@@ -2,9 +2,10 @@ package main
 
 import (
 	"bufio"
+	"nfceimport/model"
 
 	"log"
-	"nfceimport/model"
+
 	"os"
 	"strings"
 )
