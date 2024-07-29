@@ -32,6 +32,20 @@ func getLinesFromFile(path string) []interface{} {
 			parametros = append(parametros, model.GetIni(fields))
 		case "MON":
 			parametros = append(parametros, model.GetMon(fields))
+		case "ECF":
+			parametros = append(parametros, model.GetEcf(fields))
+		case "PDV":
+			parametros = append(parametros, model.GetPdv(fields))
+		case "DOC":
+			parametros = append(parametros, model.GetDoc(fields))
+		case "DFE":
+			parametros = append(parametros, model.GetDfe(fields))
+		case "DIT":
+			parametros = append(parametros, model.GetEcf(fields))
+		case "DXL":
+			parametros = append(parametros, model.GetDxl(fields))
+		case "FIM":
+			parametros = append(parametros, model.GetFim(fields))
 		default:
 		}
 

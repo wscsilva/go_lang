@@ -28,3 +28,23 @@ start nfce_import.exe
 defer file.Close()
 ```
 - A palavra-chave defer em Go é usada para adiar a execução de uma função até que a função em que ela foi chamada termine. A sintaxe defer file.Close() é comumente usada para garantir que os recursos sejam liberados de forma adequada, independentemente de como a função termine, seja por uma execução normal ou por um erro.
+
+### Prompt blackbox.ia
+- leia o arquivo e crie uma tabela de todos os campos.
+
+- crie uma estrutura em golang para gravar todos os dados da tabela, crie uma função com retorno, os dados devem ser preenchido com os valores da tabela.
+
+- com a tabela criada, crie um arquivo em golang da google para guardar todas as colunas
+
+
+- crie uma tabela do arquivo, enviar a imagem
+- com a tabela gerada, crie um arquivo em golang da google para guardar todas as colunas, o retorno tem que ser um conjuto json de chave e valor de acordo com as colunas da tabela
+
+- crie uma tabela do arquivo
+- com a tabela gerada, crie um arquivo em golang da google para guardar todas as colunas e linhas, o retorno deve ser um slice contendo as chaves e valores de acordo com as colunas e linhas da tabela gerada.
+
+- o GetEcf deve conter no slice chave e valor de acordo com a tabela da imagem.
+
+- Crie uma chave no struct chamada Value
+
+- Complete o GetDfe, fazer a primeira linha de exmplo
