@@ -22,8 +22,6 @@ func getLinesFromFile(path string) []interface{} {
 	// Ler o arquivo linha por linha
 	scanner := bufio.NewScanner(file)
 
-	/* 	var parametrosIni []model.RegistroINI
-	   	var parametrosMon []model.RegistroMON */
 	var parametros []interface{}
 
 	for scanner.Scan() {
@@ -36,18 +34,7 @@ func getLinesFromFile(path string) []interface{} {
 			parametros = append(parametros, model.GetMon(fields))
 		default:
 		}
-		/* 		if len(fields) > 0 {
-			parametro := Parametros{
-				Parametro: fields[0],
-				Dados:     make(map[string]string),
-			}
-			for i, field := range fields[1:] {
-				if field != "" {
-					parametro.Dados[fmt.Sprintf("campo_%d", i+1)] = field
-				}
-			}
-			parametros = append(parametros, parametro)
-		} */
+
 	}
 
 	// Verificar se houve algum erro na leitura do arquivo

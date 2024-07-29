@@ -38,9 +38,5 @@ func GetIni(fields []string) []RegistroINI {
 		{Seq: 11, Campo: "CNPJ", Descricao: "CNPJ da loja a qual a movimentação pertence.", Tipo: "N", Bytes: 14, Cnpj: "CNPJ da loja a qual a movimentação pertence.", Value: fields[10]},
 	}
 
-	// Print the RegistroINIList.
-	/* 	for _, registro := range RegistroINIList {
-		fmt.Printf("%+v\n", registro)
-	} */
 	return RegistroINIList
 }
