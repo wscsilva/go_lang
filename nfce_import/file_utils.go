@@ -1,53 +1,59 @@
 package main
 
 import (
-	"fmt"
-	"io"
+	"bufio"
+
 	"log"
+	"nfceimport/model"
 	"os"
-	"path/filepath"
+	"strings"
 )
 
-func lerArquivo(path string) (*os.File, error) {
+func getLinesFromFile(path string) []interface{} {
 	// Abrir o arquivo CSV
 	file, err := os.Open(path)
 	if err != nil {
 		log.Fatalf("Erro ao abrir o arquivo: %v", err)
-		return nil, err
+		return nil
 	}
+	// Garantir que o arquivo será fechado ao final da função
 	defer file.Close()
-	return file, nil
-}
 
-// Move o arquivo processado para o diretório de processados
-func moveFileToProcessedDir(sourcePath string) {
-	processedDir := "C:/Via/pdv/vendas/"
-	destinationPath := filepath.Join(processedDir, filepath.Base(sourcePath))
+	// Ler o arquivo linha por linha
+	scanner := bufio.NewScanner(file)
 
-	if err := copyFile(sourcePath, destinationPath); err != nil {
-		log.Printf("Erro ao mover o arquivo: %v\n", err)
-	} else {
-		fmt.Printf("Arquivo movido para: %s\n", destinationPath)
-		if err := os.Remove(sourcePath); err != nil {
-			log.Printf("Erro ao remover o arquivo original: %v\n", err)
+	/* 	var parametrosIni []model.RegistroINI
+	   	var parametrosMon []model.RegistroMON */
+	var parametros []interface{}
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		fields := strings.Split(line, "|")
+		switch fields[0] {
+		case "INI":
+			parametros = append(parametros, model.GetIni(fields))
+		case "MON":
+			parametros = append(parametros, model.GetMon(fields))
+		default:
 		}
+		/* 		if len(fields) > 0 {
+			parametro := Parametros{
+				Parametro: fields[0],
+				Dados:     make(map[string]string),
+			}
+			for i, field := range fields[1:] {
+				if field != "" {
+					parametro.Dados[fmt.Sprintf("campo_%d", i+1)] = field
+				}
+			}
+			parametros = append(parametros, parametro)
+		} */
 	}
-}
 
-// Copia um arquivo de um local para outro
-func copyFile(sourcePath, destinationPath string) error {
-	inputFile, err := os.Open(sourcePath)
-	if err != nil {
-		return err
+	// Verificar se houve algum erro na leitura do arquivo
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("Erro ao ler o arquivo: %v", err)
 	}
-	defer inputFile.Close()
 
-	outputFile, err := os.Create(destinationPath)
-	if err != nil {
-		return err
-	}
-	defer outputFile.Close()
-
-	_, err = io.Copy(outputFile, inputFile)
-	return err
+	return parametros
 }

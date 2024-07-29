@@ -1,18 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"strings"
+	"nfceimport/model"
 
 	"nfceimport/db"
 )
-
-type Parametros struct {
-	Parametro string
-	Dados     map[string]string
-}
 
 func main() {
 	// Abrir a conexão com o banco de dados
@@ -22,45 +16,26 @@ func main() {
 	}
 	defer db.FecharConexao(conexao)
 
-	file, err := lerArquivo("C:/Via/pdv/vendas/00301645.djm")
-
-	// Abrir o arquivo CSV
-	/* 	file, err := os.Open("C:/Via/pdv/vendas/00301645.djm")
-	   	if err != nil {
-	   		log.Fatalf("Erro ao abrir o arquivo: %v", err)
-	   	}
-	   	defer file.Close()
-	*/
-	// Ler o arquivo linha por linha
-	scanner := bufio.NewScanner(file)
-
-	var parametros []Parametros
-
-	linha := 1
-	for scanner.Scan() {
-		line := scanner.Text()
-		fields := strings.Split(line, "|")
-		if len(fields) > 0 {
-			parametro := Parametros{
-				Parametro: fields[0],
-				Dados:     make(map[string]string),
+	parametros := getLinesFromFile("C:/Via/pdv/vendas/00301645.djm")
+	//fmt.Println(parametros[0])
+	for _, parametro := range parametros {
+		//fmt.Println(parametro)
+		switch p := parametro.(type) {
+		case []model.RegistroINI:
+			fmt.Println(p[0].Value)
+			/* 			for _, registro := range p {
+				fmt.Printf("%s:  %s\n", registro.Campo, registro.Value)
+			} */
+			// acesso aos campos específicos do RegistroINI
+		case []model.RegistroMON:
+			// acesso aos campos específicos do RegistroMON
+			//fmt.Println(p[0].Value)
+			for _, registro := range p {
+				fmt.Printf("%s:  %s\n", registro.Nome, registro.Value)
 			}
-			for i, field := range fields[1:] {
-				if field != "" {
-					parametro.Dados[fmt.Sprintf("campo_%d", i+1)] = field
-				}
-			}
-			parametros = append(parametros, parametro)
+
+		default:
 		}
-		//fmt.Printf("Linha %d: %s\n", linha, line)
-		linha++
 	}
 
-	//jsonData, err := json.Marshal(parametros)
-	if err != nil {
-		log.Fatalf("Erro ao criar JSON: %v", err)
-	}
-	// fmt.Println(string(jsonData))
-	fmt.Println(parametros[1].Dados)
-	fmt.Println(parametros[1].Dados["campo_1"])
 }
