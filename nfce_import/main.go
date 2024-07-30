@@ -2,33 +2,58 @@ package main
 
 import (
 	"fmt"
-
-	logger "nfceimport/log"
 	"nfceimport/model"
-
-	services "nfceimport/service"
+	"nfceimport/service"
+	"nfceimport/util"
 )
 
 func main() {
 
-	loja := services.GetLoja()
+	loja := service.GetLoja()
 
 	fmt.Println(loja.LojCnpj)
-	logInstance, err := logger.NewZapLogger()
-	//logInstanceLogrus := logger.NewLogger()
-	if err != nil {
-		logInstance.Fatalf("Não foi possível inicializar o logger: %v", err)
-	}
 
-	//ogInstance.Infof("Aplicação iniciada")
-	//logInstanceLogrus.Fatalf("dkfjdaskfjskfjds")
+	saveDOC()
 
 	//openFile()
 
 }
 
+func saveDOC() {
+	/// Retorna todas as linhas do arquivo em um objeto
+	registros := readRegistros()
+
+	for _, doc := range registros {
+		/// Obtem o tipo de objeto da interface
+		switch d := doc.(type) {
+		/// Obtem o tipo DOC
+		case model.RegistroDoc2:
+			if d.Doc["DENOMINACAO"] == "RV" {
+				fmt.Println(d.Doc["CHAVE_DFE"])
+
+			}
+			/// Obtem somente o DOC registro de venda (RV)
+			/* 			if d[5].Value == "RV" {
+			   				for _, r := range d {
+
+			   					fmt.Println(r.Value)
+
+			   				}
+			   			}
+			*/
+		}
+	}
+	//fmt.Println(registros)
+	//service.SaveDOC("C:/Via/pdv/vendas/00299667.djm")
+}
+
+func readRegistros() []interface{} {
+	registros := util.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
+	return registros
+}
+
 func openFile() {
-	parametros := getLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
+	parametros := util.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
 	for _, parametro := range parametros {
 		switch p := parametro.(type) {
 		case []model.RegistroINI:

@@ -51,3 +51,5 @@ defer file.Close()
 - Complete o GetDfe, fazer a primeira linha de exmplo
 
 ### Prompt gerar os objetos struct
+
+- reescreva o retorno RegistroDoc para um map contendo a chave com o Campo e o valor com o Valuetransforme o retorno RegistroDoc em um objeto map contendo a chave com o Campo e o valor com o Value

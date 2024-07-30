@@ -11,6 +11,10 @@ type RegistroDoc struct {
 	// Added for the second table
 }
 
+type RegistroDoc2 struct {
+	Doc map[string]string
+}
+
 func GetDoc(fields []string) []RegistroDoc {
 	return []RegistroDoc{
 		{Seq: 1, Campo: "TIPO", Descricao: "Tipo de registro, valor fixo.", Tipo: "A", Bytes: 3, Observacoes: "Fixo DOC", Value: fields[0]},
@@ -85,4 +89,45 @@ func GetDoc(fields []string) []RegistroDoc {
 		{Seq: 36, Campo: "CHAVE_DFE", Descricao: "Chave do Documento", Tipo: "N", Bytes: 50, Observacoes: "",
 			Value: fields[35]},
 	}
+}
+
+func GetDoc2(fields []string) RegistroDoc2 {
+	resultado := make(map[string]string)
+	resultado["TIPO"] = fields[0]
+	resultado["CODTERMINAL"] = fields[1]
+	resultado["CODTURNO"] = fields[2]
+	resultado["CODECF"] = fields[3]
+	resultado["COO"] = fields[4]
+	resultado["DENOMINACAO"] = fields[5]
+	resultado["CONTADOR"] = fields[6]
+	resultado["DATA_INICIO"] = fields[7]
+	resultado["HORA_INICIO"] = fields[8]
+	resultado["DATA_FIM"] = fields[9]
+	resultado["HORA_FIM"] = fields[10]
+	resultado["DESCRICAO"] = fields[11]
+	resultado["CODCLIENTEEXT"] = fields[12]
+	resultado["CODCLIENTE"] = fields[13]
+	resultado["CODAUTORIZADO"] = fields[14]
+	resultado["DOCUMENTO_CLI"] = fields[15]
+	resultado["NOME_CLI"] = fields[16]
+	resultado["SUBTOTAL"] = fields[17]
+	resultado["DESCONTO_ACRESCIMO"] = fields[18]
+	resultado["TOTAL_PAGO"] = fields[19]
+	resultado["TROCO"] = fields[20]
+	resultado["CODPLANOPGEXT"] = fields[21]
+	resultado["PLANOPAGTO"] = fields[22]
+	resultado["CANCELADO"] = fields[23]
+	resultado["QTD_TOTAL_ITENS"] = fields[24]
+	resultado["CD_EXT_PREVENDA"] = fields[25]
+	resultado["VENDEDOR_PRE"] = fields[26]
+	resultado["ID_MOTIVO_CANC"] = fields[27]
+	resultado["ID_MOTIVO_DESC"] = fields[28]
+	resultado["OBSERVACAO"] = fields[29]
+	resultado["TIPO_ORCAMENTO"] = fields[30]
+	resultado["MODELO"] = fields[31]
+	resultado["TIPO_EMISSAO"] = fields[32]
+	resultado["NUMERO"] = fields[33]
+	resultado["SERIE"] = fields[34]
+	resultado["CHAVE_DFE"] = fields[35]
+	return RegistroDoc2{Doc: resultado}
 }

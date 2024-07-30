@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func getLinesFromFile(path string) []interface{} {
+func GetLinesFromFile(path string) []interface{} {
 	// Abrir o arquivo CSV
 	file, err := os.Open(path)
 	if err != nil {
@@ -38,7 +38,7 @@ func getLinesFromFile(path string) []interface{} {
 		case "PDV":
 			parametros = append(parametros, model.GetPdv(fields))
 		case "DOC":
-			parametros = append(parametros, model.GetDoc(fields))
+			parametros = append(parametros, model.GetDoc2(fields))
 		case "DFE":
 			parametros = append(parametros, model.GetDfe(fields))
 		case "DIT":
