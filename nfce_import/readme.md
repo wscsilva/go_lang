@@ -29,7 +29,8 @@ defer file.Close()
 ```
 - A palavra-chave defer em Go é usada para adiar a execução de uma função até que a função em que ela foi chamada termine. A sintaxe defer file.Close() é comumente usada para garantir que os recursos sejam liberados de forma adequada, independentemente de como a função termine, seja por uma execução normal ou por um erro.
 
-### Prompt blackbox.ia
+## blackbox.ia
+### Prompt Converter imagem em tabela
 - leia o arquivo e crie uma tabela de todos os campos.
 
 - crie uma estrutura em golang para gravar todos os dados da tabela, crie uma função com retorno, os dados devem ser preenchido com os valores da tabela.
@@ -48,3 +49,5 @@ defer file.Close()
 - Crie uma chave no struct chamada Value
 
 - Complete o GetDfe, fazer a primeira linha de exmplo
+
+### Prompt gerar os objetos struct

@@ -17,7 +17,7 @@ type Loja struct {
 	LojCnpj                   string
 }
 
-func GetLoja() []Loja {
+func GetLoja() Loja {
 	sqlGetParams := `
 		select 
 			l.loj_codigo ,
@@ -30,17 +30,17 @@ func GetLoja() []Loja {
 		from wsloja l
 		where l.loj_emite_nfce = 'S'
 	`
-	db := getConection()
-	rows, err := db.Query(sqlGetParams)
+	connection := getConection()
+	rows, err := connection.Query(sqlGetParams)
 	if err != nil {
 		log.Fatalf("Erro ao abrir a consulta: %v", err)
 	}
 	defer rows.Close()
-	defer db.Close()
+	db.FecharConexao(connection)
 
-	var params []Loja
+	var param Loja
+	//var params []Loja
 	for rows.Next() {
-		var param Loja
 		err := rows.Scan(
 			&param.LojCodigo,
 			&param.LojRazSocial,
@@ -53,18 +53,17 @@ func GetLoja() []Loja {
 		if err != nil {
 			log.Fatalf("Erro aopopular Loja: %v", err)
 		}
-		params = append(params, param)
+		//params = append(params, param)
 	}
 
-	return params
+	return param
 }
 
 func getConection() *sql.DB {
-	conection, err := db.ConectarBancoDeDados()
+	connection, err := db.ConectarBancoDeDados()
 	if err != nil {
 		log.Fatalf("Erro ao abrir a conexão: %v", err)
 	}
-	//defer db.FecharConexao(conection)
 
-	return conection
+	return connection
 }

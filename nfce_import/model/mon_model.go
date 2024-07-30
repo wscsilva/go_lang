@@ -1,61 +1,21 @@
 package model
 
 type RegistroMON struct {
-	Codigo      string
-	Nome        string
-	Descricao   string
-	Tipo        string
-	Tamanho     string
-	ValorPadrao string
+	Seq         int    `json:"seq"`
+	Campo       string `json:"campo"`
+	Descricao   string `json:"descricao"`
+	Tipo        string `json:"tipo"`
+	Bytes       int    `json:"bytes"`
+	Observacoes string `json:"observacoes"`
 	Value       string
 }
 
 func GetMon(fields []string) []RegistroMON {
 	return []RegistroMON{
-		{
-			Codigo:      "01",
-			Nome:        "Tipo",
-			Descricao:   "Tipo de registro, valor fixo.",
-			Tipo:        "A",
-			Tamanho:     "3",
-			ValorPadrao: "Fixo MON",
-			Value:       fields[0],
-		},
-		{
-			Codigo:      "02",
-			Nome:        "Versão",
-			Descricao:   "Versão do DJ Monitor.",
-			Tipo:        "A",
-			Tamanho:     "8",
-			ValorPadrao: "",
-			Value:       fields[1],
-		},
-		{
-			Codigo:      "03",
-			Nome:        "Tabela",
-			Descricao:   "Versão das tabelas do banco de dados.",
-			Tipo:        "N",
-			Tamanho:     "4",
-			ValorPadrao: "",
-			Value:       fields[2],
-		},
-		{
-			Codigo:      "04",
-			Nome:        "Firebird",
-			Descricao:   "Versão do Firebird instalado.",
-			Tipo:        "A",
-			Tamanho:     "4",
-			ValorPadrao: "",
-			Value:       fields[3],
-		},
-		{
-			Codigo:      "05",
-			Nome:        "ODS",
-			Descricao:   "Versão do ODS instalado.",
-			Tipo:        "A",
-			Tamanho:     "4",
-			ValorPadrao: "",
-			Value:       fields[4],
-		},
+		{Seq: 1, Campo: "Tipo", Descricao: "Tipo de registro, valor fixo.", Tipo: "A", Bytes: 3, Observacoes: "Fixo MON", Value: fields[0]},
+		{Seq: 2, Campo: "Versão", Descricao: "Versão do DJ Monitor.", Tipo: "A", Bytes: 8, Observacoes: "", Value: fields[1]},
+		{Seq: 3, Campo: "Tabela", Descricao: "Versão das tabelas do banco de dados.", Tipo: "N", Bytes: 4, Observacoes: "", Value: fields[2]},
+		{Seq: 4, Campo: "Firebird", Descricao: "Versão do Firebird instalado.", Tipo: "A", Bytes: 4, Observacoes: "", Value: fields[3]},
+		{Seq: 5, Campo: "ODS", Descricao: "Versão do ODS instalado.", Tipo: "A", Bytes: 4, Observacoes: "", Value: fields[4]},
 	}
 }

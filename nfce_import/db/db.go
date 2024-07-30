@@ -35,4 +35,5 @@ func ConectarBancoDeDados() (*sql.DB, error) {
 
 func FecharConexao(db *sql.DB) {
 	db.Close()
+	fmt.Println("Conexão com o banco de dados finalizada!")
 }

@@ -11,24 +11,24 @@ import (
 
 func main() {
 
-	teste := services.GetLoja()
+	loja := services.GetLoja()
 
-	fmt.Println(teste[0].LojCnpj)
+	fmt.Println(loja.LojCnpj)
 	logInstance, err := logger.NewZapLogger()
-	logInstanceLogrus := logger.NewLogger()
+	//logInstanceLogrus := logger.NewLogger()
 	if err != nil {
 		logInstance.Fatalf("Não foi possível inicializar o logger: %v", err)
 	}
 
-	logInstance.Infof("Aplicação iniciada")
-	logInstanceLogrus.Fatalf("dkfjdaskfjskfjds")
+	//ogInstance.Infof("Aplicação iniciada")
+	//logInstanceLogrus.Fatalf("dkfjdaskfjskfjds")
 
-	//OpenFile()
+	//openFile()
 
 }
 
-func OpenFile() {
-	parametros := getLinesFromFile("C:/Via/pdv/vendas/00301645.djm")
+func openFile() {
+	parametros := getLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
 	for _, parametro := range parametros {
 		switch p := parametro.(type) {
 		case []model.RegistroINI:
@@ -40,7 +40,7 @@ func OpenFile() {
 		case []model.RegistroMON:
 
 			for _, registro := range p {
-				fmt.Printf("%s:  %s\n", registro.Nome, registro.Value)
+				fmt.Printf("%s:  %s\n", registro.Campo, registro.Value)
 			}
 		case []model.RegistroDXL:
 
