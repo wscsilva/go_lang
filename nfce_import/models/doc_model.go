@@ -1,6 +1,6 @@
 package models
 
-type RegistroDoc struct {
+type RegistroDoc2 struct {
 	Seq         int    `json:"seq"`
 	Campo       string `json:"campo"`
 	Descricao   string `json:"descricao"`
@@ -11,12 +11,12 @@ type RegistroDoc struct {
 	// Added for the second table
 }
 
-type RegistroDoc2 struct {
-	Doc map[string]string
+type RegistroDoc struct {
+	Documento map[string]string
 }
 
-func GetDoc(fields []string) []RegistroDoc {
-	return []RegistroDoc{
+func GetDoc2(fields []string) []RegistroDoc2 {
+	return []RegistroDoc2{
 		{Seq: 1, Campo: "TIPO", Descricao: "Tipo de registro, valor fixo.", Tipo: "A", Bytes: 3, Observacoes: "Fixo DOC", Value: fields[0]},
 		{Seq: 2, Campo: "CODTERMINAL", Descricao: "Código do terminal no DJMonitor", Tipo: "N", Bytes: 4, Observacoes: "",
 			Value: fields[1]},
@@ -91,7 +91,7 @@ func GetDoc(fields []string) []RegistroDoc {
 	}
 }
 
-func GetDoc2(fields []string) RegistroDoc2 {
+func GetDoc1(fields []string) RegistroDoc {
 	resultado := make(map[string]string)
 	resultado["TIPO"] = fields[0]
 	resultado["CODTERMINAL"] = fields[1]
@@ -129,5 +129,85 @@ func GetDoc2(fields []string) RegistroDoc2 {
 	resultado["NUMERO"] = fields[33]
 	resultado["SERIE"] = fields[34]
 	resultado["CHAVE_DFE"] = fields[35]
-	return RegistroDoc2{Doc: resultado}
+	return RegistroDoc{Documento: resultado}
+}
+
+type GetRegistrosRV struct {
+	TIPO               string
+	CODTERMINAL        string
+	CODTURNO           string
+	CODECF             string
+	COO                string
+	DENOMINACAO        string
+	CONTADOR           string
+	DATA_INICIO        string
+	HORA_INICIO        string
+	DATA_FIM           string
+	HORA_FIM           string
+	DESCRICAO          string
+	CODCLIENTEEXT      string
+	CODCLIENTE         string
+	CODAUTORIZADO      string
+	DOCUMENTO_CLI      string
+	NOME_CLI           string
+	SUBTOTAL           string
+	DESCONTO_ACRESCIMO string
+	TOTAL_PAGO         string
+	TROCO              string
+	CODPLANOPGEXT      string
+	PLANOPAGTO         string
+	CANCELADO          string
+	QTD_TOTAL_ITENS    string
+	CD_EXT_PREVENDA    string
+	VENDEDOR_PRE       string
+	ID_MOTIVO_CANC     string
+	ID_MOTIVO_DESC     string
+	OBSERVACAO         string
+	TIPO_ORCAMENTO     string
+	MODELO             string
+	TIPO_EMISSAO       string
+	NUMERO             string
+	SERIE              string
+	CHAVE_DFE          string
+}
+
+func GetDoc(fields []string) GetRegistrosRV {
+	return GetRegistrosRV{
+		TIPO:               fields[0],
+		CODTERMINAL:        fields[1],
+		CODTURNO:           fields[2],
+		CODECF:             fields[3],
+		COO:                fields[4],
+		DENOMINACAO:        fields[5],
+		CONTADOR:           fields[6],
+		DATA_INICIO:        fields[7],
+		HORA_INICIO:        fields[8],
+		DATA_FIM:           fields[9],
+		HORA_FIM:           fields[10],
+		DESCRICAO:          fields[11],
+		CODCLIENTEEXT:      fields[12],
+		CODCLIENTE:         fields[13],
+		CODAUTORIZADO:      fields[14],
+		DOCUMENTO_CLI:      fields[15],
+		NOME_CLI:           fields[16],
+		SUBTOTAL:           fields[17],
+		DESCONTO_ACRESCIMO: fields[18],
+		TOTAL_PAGO:         fields[19],
+		TROCO:              fields[20],
+		CODPLANOPGEXT:      fields[21],
+		PLANOPAGTO:         fields[22],
+		CANCELADO:          fields[23],
+		QTD_TOTAL_ITENS:    fields[24],
+		CD_EXT_PREVENDA:    fields[25],
+		VENDEDOR_PRE:       fields[26],
+		ID_MOTIVO_CANC:     fields[27],
+		ID_MOTIVO_DESC:     fields[28],
+		OBSERVACAO:         fields[29],
+		TIPO_ORCAMENTO:     fields[30],
+		MODELO:             fields[31],
+		TIPO_EMISSAO:       fields[32],
+		NUMERO:             fields[33],
+		SERIE:              fields[34],
+		CHAVE_DFE:          fields[35],
+	}
 }

@@ -1,11 +1,23 @@
 package service
 
 import (
-	"fmt"
-	"nfceimport/repositories"
+	model "nfceimport/models"
+	repository "nfceimport/repositories"
 )
 
 func ReadFileFromDjm() {
-	djm := repositories.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
-	fmt.Println(djm)
+	registrosDJM := repository.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
+
+	for _, registro := range registrosDJM {
+		/// Obtem o tipo de objeto da interface
+		switch d := registro.(type) {
+		/// Obtem o tipo DOC
+		case model.RegistroDoc:
+			if d.Documento["DENOMINACAO"] == "RV" {
+				GravarDocRV(d)
+			}
+
+		}
+	}
+
 }

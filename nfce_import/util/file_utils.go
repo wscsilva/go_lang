@@ -38,7 +38,7 @@ func GetLinesFromFile(path string) []interface{} {
 		case "PDV":
 			parametros = append(parametros, model.GetPdv(fields))
 		case "DOC":
-			parametros = append(parametros, model.GetDoc2(fields))
+			parametros = append(parametros, model.GetDoc(fields))
 		case "DFE":
 			parametros = append(parametros, model.GetDfe(fields))
 		case "DIT":

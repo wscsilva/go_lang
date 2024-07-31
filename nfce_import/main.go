@@ -29,9 +29,9 @@ func saveDOC() {
 		/// Obtem o tipo de objeto da interface
 		switch d := doc.(type) {
 		/// Obtem o tipo DOC
-		case models.RegistroDoc2:
-			if d.Doc["DENOMINACAO"] == "RV" {
-				fmt.Println(d.Doc["CHAVE_DFE"])
+		case models.RegistroDoc:
+			if d.Documento["DENOMINACAO"] == "RV" {
+				fmt.Println(d.Documento["CHAVE_DFE"])
 			}
 
 		}
