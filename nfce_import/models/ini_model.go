@@ -1,4 +1,4 @@
-package model
+package models
 
 // RegistroINI represents a single row in the Registro INI table.
 type RegistroINI struct {

@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroDAV_DIT struct {
 	Seq       int    `json:"seq"`

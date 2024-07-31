@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroPDV struct {
 	Seq         int    `json:"seq"`

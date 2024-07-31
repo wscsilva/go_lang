@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroFIM struct {
 	Seq         int    `json:"seq"`

@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroDIT struct {
 	Seq         int    `json:"seq"`

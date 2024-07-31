@@ -1,11 +1,9 @@
-package util
+package repositories
 
 import (
 	"bufio"
-	model "nfceimport/models"
-
 	"log"
-
+	model "nfceimport/models"
 	"os"
 	"strings"
 )
@@ -15,7 +13,7 @@ func GetLinesFromFile(path string) []interface{} {
 	file, err := os.Open(path)
 	if err != nil {
 		log.Fatalf("Erro ao abrir o arquivo: %v", err)
-		return nil
+
 	}
 	// Garantir que o arquivo será fechado ao final da função
 	defer file.Close()
@@ -49,9 +47,7 @@ func GetLinesFromFile(path string) []interface{} {
 			parametros = append(parametros, model.GetFim(fields))
 		default:
 		}
-
 	}
-
 	// Verificar se houve algum erro na leitura do arquivo
 	if err := scanner.Err(); err != nil {
 		log.Fatalf("Erro ao ler o arquivo: %v", err)

@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroDFE struct {
 	Seq         int    `json:"seq"`

@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroECF struct {
 	Seq         int    `json:"seq"`

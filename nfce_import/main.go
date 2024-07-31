@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"nfceimport/model"
-	"nfceimport/service"
+	"nfceimport/models"
+	service "nfceimport/services"
 	"nfceimport/util"
 )
 
@@ -13,7 +13,9 @@ func main() {
 
 	fmt.Println(loja.LojCnpj)
 
-	saveDOC()
+	service.ReadFileFromDjm()
+
+	//saveDOC()
 
 	//openFile()
 
@@ -27,24 +29,13 @@ func saveDOC() {
 		/// Obtem o tipo de objeto da interface
 		switch d := doc.(type) {
 		/// Obtem o tipo DOC
-		case model.RegistroDoc2:
+		case models.RegistroDoc2:
 			if d.Doc["DENOMINACAO"] == "RV" {
 				fmt.Println(d.Doc["CHAVE_DFE"])
-
 			}
-			/// Obtem somente o DOC registro de venda (RV)
-			/* 			if d[5].Value == "RV" {
-			   				for _, r := range d {
 
-			   					fmt.Println(r.Value)
-
-			   				}
-			   			}
-			*/
 		}
 	}
-	//fmt.Println(registros)
-	//service.SaveDOC("C:/Via/pdv/vendas/00299667.djm")
 }
 
 func readRegistros() []interface{} {
@@ -56,18 +47,18 @@ func openFile() {
 	parametros := util.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
 	for _, parametro := range parametros {
 		switch p := parametro.(type) {
-		case []model.RegistroINI:
+		case []models.RegistroINI:
 
 			for _, registro := range p {
 				fmt.Printf("%s:  %s\n", registro.Campo, registro.Value)
 			}
 
-		case []model.RegistroMON:
+		case []models.RegistroMON:
 
 			for _, registro := range p {
 				fmt.Printf("%s:  %s\n", registro.Campo, registro.Value)
 			}
-		case []model.RegistroDXL:
+		case []models.RegistroDXL:
 
 			fmt.Println("Registro PDV - Informações sobre o Terminal")
 			fmt.Println("---------------------------------------")

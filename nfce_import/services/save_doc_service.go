@@ -1,6 +1,6 @@
 package service
 
-import "nfceimport/util"
+import util "nfceimport/util"
 
 func SaveDOC(path string) {
 	util.GetLinesFromFile(path)

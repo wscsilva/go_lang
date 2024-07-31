@@ -1,4 +1,4 @@
-package model
+package models
 
 type RegistroDXL struct {
 	Seq         int    `json:"seq"`
