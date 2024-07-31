@@ -18,6 +18,7 @@ func ConvertStringToDate(dateStr string, format string) (time.Time, error) {
 
 // ConvertToCurrency converts a float64 to a string representing a currency value.
 func ConvertToCurrency(value float64) string {
+
 	return fmt.Sprintf("%.2f", value)
 }
 

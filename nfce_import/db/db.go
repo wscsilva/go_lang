@@ -12,7 +12,7 @@ const (
 	port     = 5433
 	user     = "postgres"
 	password = "Maker@1"
-	dbname   = "maxi"
+	dbname   = "quintel"
 )
 
 func ConectarBancoDeDados() (*sql.DB, error) {
