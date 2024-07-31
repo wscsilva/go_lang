@@ -12,8 +12,9 @@ func ReadFileFromDjm() {
 		/// Obtem o tipo de objeto da interface
 		switch d := registro.(type) {
 		/// Obtem o tipo DOC
-		case model.RegistroDoc:
-			if d.Documento["DENOMINACAO"] == "RV" {
+		case model.GetRegistrosRV:
+
+			if d.DENOMINACAO == "RV" {
 				GravarDocRV(d)
 			}
 

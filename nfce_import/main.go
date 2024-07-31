@@ -5,9 +5,11 @@ import (
 	"nfceimport/models"
 	service "nfceimport/services"
 	"nfceimport/util"
+	"time"
 )
 
 func main() {
+	testeData()
 
 	loja := service.GetLoja()
 
@@ -15,10 +17,27 @@ func main() {
 
 	service.ReadFileFromDjm()
 
+	data, err := util.ConvertStringToDate("20240608", "20060102")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(data)
+
 	//saveDOC()
 
 	//openFile()
 
+}
+func testeData() {
+	dataString := "20240608"
+	t, err := time.Parse("20060102", dataString)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(t)
+	dataFormatada := t.Format("02/01/2006")
+	fmt.Println(dataFormatada)
 }
 
 func saveDOC() {

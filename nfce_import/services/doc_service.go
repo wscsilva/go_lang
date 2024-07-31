@@ -6,7 +6,7 @@ import (
 	model "nfceimport/models"
 )
 
-func GravarDocRV(DOC model.RegistroDoc) {
+func GravarDocRV(DOC model.GetRegistrosRV) {
 
-	fmt.Println(DOC.Documento["SERIE"])
+	fmt.Printf("Data: %s COO: %s | Série: %s\n", DOC.DATA_INICIO, DOC.COO, DOC.SERIE)
 }
