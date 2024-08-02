@@ -8,7 +8,8 @@ import (
 	"strings"
 )
 
-func GetLinesFromFile(path string) []interface{} {
+// Obtem todos os regsitros do arquivo .djm
+func GetRegistryFromDJMFile(path string) []interface{} {
 	// Abrir o arquivo CSV
 	file, err := os.Open(path)
 	if err != nil {

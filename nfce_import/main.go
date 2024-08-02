@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	controller "nfceimport/controller"
 	"nfceimport/models"
-	service "nfceimport/services"
 	"nfceimport/util"
 )
 
@@ -13,7 +13,7 @@ func main() {
 
 	//fmt.Println(loja.LojCnpj)
 
-	service.ReadFileFromDjm()
+	controller.ReadFileFromDjm()
 
 	//saveDOC()
 

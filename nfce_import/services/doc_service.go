@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"errors"
@@ -73,43 +73,4 @@ func getCupom(DOC model.GetRegistrosRV) (Cupom, error) {
 	}
 
 	return cupom, nil
-}
-
-func getCupom2(DOC model.GetRegistrosRV) Cupom {
-	sql := `
-	select 
-		c.cupom ,
-		c.caixa ,
-		c."data" ,
-		c.cancelado ,
-		c.nfce_numero ,
-		c.nfce_serie 
-	from wscupom c
-	where c.nfce_numero = $1
-	and c.nfce_serie = $2	
-`
-	connection := getConection()
-	rows, err := connection.Query(sql, DOC.NUMERO, DOC.SERIE)
-	if err != nil {
-		log.Fatalf("Erro ao abrir a consulta: %v", err)
-	}
-	defer rows.Close()
-	db.FecharConexao(connection)
-	var param Cupom
-	//var params []Loja
-	for rows.Next() {
-		err := rows.Scan(
-			&param.Cupom,
-			&param.Caixa,
-			&param.Data,
-			&param.Cancelado,
-			&param.NfceNumero,
-			&param.NfceSerie,
-		)
-		if err != nil {
-			log.Fatalf("Erro ao popular Cupom: %v", err)
-		}
-	}
-	return param
-
 }

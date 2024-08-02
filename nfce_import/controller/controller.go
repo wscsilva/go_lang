@@ -1,12 +1,13 @@
-package service
+package controller
 
 import (
 	model "nfceimport/models"
 	repository "nfceimport/repositories"
+	"nfceimport/services"
 )
 
 func ReadFileFromDjm() {
-	registrosDJM := repository.GetLinesFromFile("C:/Via/pdv/vendas/00299667.djm")
+	registrosDJM := repository.GetRegistryFromDJMFile("C:/Via/pdv/vendas/00299667.djm")
 
 	for _, registro := range registrosDJM {
 		/// Obtem o tipo de objeto da interface
@@ -15,7 +16,7 @@ func ReadFileFromDjm() {
 		case model.GetRegistrosRV:
 
 			if d.DENOMINACAO == "RV" {
-				GravarDocRV(d)
+				services.GravarDocRV(d)
 			}
 
 		}
