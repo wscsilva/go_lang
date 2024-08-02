@@ -53,3 +53,8 @@ defer file.Close()
 ### Prompt gerar os objetos struct
 
 - reescreva o retorno RegistroDoc para um map contendo a chave com o Campo e o valor com o Valuetransforme o retorno RegistroDoc em um objeto map contendo a chave com o Campo e o valor com o Value
+
+### Consulta no banco de dados
+- Erro: Query é utilizado para executar consultas SQL que retornam múltiplos resultados, enquanto o método Scan é utilizado para ler os resultados de uma consulta que retorna apenas um resultado. No entanto, no seu código, você está utilizando o método Query para executar a consulta e, em seguida, está tentando ler os resultados com o método Scan.
+
+- Solução: Para resolver esse problema, você pode utilizar o método QueryRow em vez de Query. O método QueryRow é utilizado para executar consultas SQL que retornam apenas um resultado e é compatível com o método Scan.

@@ -37,3 +37,42 @@ func FecharConexao(db *sql.DB) {
 	db.Close()
 	fmt.Println("Conexão com o banco de dados finalizada!")
 }
+
+func ExecuteQuery(consulta string, params ...interface{}) (*sql.Rows, error) {
+	connection, err := ConectarBancoDeDados()
+	if err != nil {
+		return nil, err
+	}
+	stmt, err := connection.Prepare(consulta)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(params...)
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, nil
+}
+
+func ExecutarComando(db *sql.DB, comando string, params ...interface{}) (int64, error) {
+	stmt, err := db.Prepare(comando)
+	if err != nil {
+		return 0, err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(params...)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAfetadas, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return rowsAfetadas, nil
+}

@@ -19,20 +19,17 @@ type Cupom struct {
 }
 
 func GravarDocRV(DOC model.GetRegistrosRV) {
-	//data, err := util.ConvertStringToDate(DOC.DATA_INICIO, constants.FORMATO_DATA)
-	/* 	if err != nil {
-		fmt.Println(err)
-	} */
+
+	// Verificar se o cupom ja foi importado
 	cupom, err := getCupom(DOC)
 	if err != nil {
 		log.Println(err)
 	}
 	fmt.Println(cupom.NfceNumero)
 
-	//dataFormatada := data.Format(constants.FORMATO_DATA_SAIDA)
-	//fmt.Printf("Data: %s COO: %s | Série: %s\n", dataFormatada, DOC.COO, DOC.SERIE)
 }
 
+// Retorna o cupom se existir
 func getCupom(DOC model.GetRegistrosRV) (Cupom, error) {
 	sql := `
         select 
@@ -46,30 +43,45 @@ func getCupom(DOC model.GetRegistrosRV) (Cupom, error) {
         where c.nfce_numero = $1
         and c.nfce_serie = $2    
     `
-	connection := getConection()
-	defer db.FecharConexao(connection)
+	/* 	connection, err := db.ConectarBancoDeDados()
+	   	if err != nil {
+	   		return Cupom{}, err
+	   	}
+	   	defer db.FecharConexao(connection)
 
-	rows, err := connection.Query(sql, DOC.NUMERO, DOC.SERIE)
+
+
+	   	// Execute a consulta
+	   	rows, err := connection.Query(sql, DOC.NUMERO, DOC.SERIE) */
+
+	// Verifique se os parâmetros são válidos
+	if DOC.NUMERO == "" || DOC.SERIE == "" {
+		return Cupom{}, errors.New("parâmetros inválidos")
+	}
+	rows, err := db.ExecuteQuery(sql, DOC.NUMERO, DOC.SERIE)
 	if err != nil {
 		return Cupom{}, err
 	}
 	defer rows.Close()
 
-	var cupom Cupom
 	if rows.Next() {
-		err := rows.Scan(
-			&cupom.Cupom,
-			&cupom.Caixa,
-			&cupom.Data,
-			&cupom.Cancelado,
-			&cupom.NfceNumero,
-			&cupom.NfceSerie,
-		)
-		if err != nil {
-			return Cupom{}, err
-		}
-	} else {
-		return Cupom{}, errors.New("nenhum resultado encontrado")
+		return Cupom{}, fmt.Errorf("NFCe número: %s com a Série: %s já cadastrado no sistema", DOC.NUMERO, DOC.SERIE)
+
+	}
+
+	// Retorne o cupom
+	var cupom Cupom
+
+	err = rows.Scan(
+		&cupom.Cupom,
+		&cupom.Caixa,
+		&cupom.Data,
+		&cupom.Cancelado,
+		&cupom.NfceNumero,
+		&cupom.NfceSerie,
+	)
+	if err != nil {
+		return Cupom{}, err
 	}
 
 	return cupom, nil
