@@ -38,7 +38,7 @@ func FecharConexao(db *sql.DB) {
 	fmt.Println("Conexão com o banco de dados finalizada!")
 }
 
-func ExecuteQuery(consulta string, params ...interface{}) (*sql.Rows, error) {
+func AbrirConsulta(consulta string, params ...interface{}) (*sql.Rows, error) {
 	connection, err := ConectarBancoDeDados()
 	if err != nil {
 		return nil, err
@@ -57,8 +57,12 @@ func ExecuteQuery(consulta string, params ...interface{}) (*sql.Rows, error) {
 	return rows, nil
 }
 
-func ExecutarComando(db *sql.DB, comando string, params ...interface{}) (int64, error) {
-	stmt, err := db.Prepare(comando)
+func ExecutarConsulta(comando string, params ...interface{}) (int64, error) {
+	connection, err := ConectarBancoDeDados()
+	if err != nil {
+		return 0, err
+	}
+	stmt, err := connection.Prepare(comando)
 	if err != nil {
 		return 0, err
 	}
@@ -75,4 +79,12 @@ func ExecutarComando(db *sql.DB, comando string, params ...interface{}) (int64, 
 	}
 
 	return rowsAfetadas, nil
+}
+
+func ExistemRegistro(stmt *sql.Rows) bool {
+	if stmt.Next() {
+		return true
+	} else {
+		return false
+	}
 }

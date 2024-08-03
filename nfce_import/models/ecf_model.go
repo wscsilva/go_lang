@@ -1,6 +1,31 @@
 package models
 
 type RegistroECF struct {
+	TIPO           string
+	CODLOJA        string
+	CODTERMINAL    string
+	CODTERMINALEXT string
+	CODECF         string
+	NUMECF         string
+	NUMLOJA        string
+	NUMUSUARIO     string
+	CRO            string
+	MFADICIONAL    string
+	MARCA          string
+	CNIECF         string
+	VERSAOSB       string
+	DATASB         string
+	HORASB         string
+	CODEXTERNO     string
+	DATACADUSUARIO string
+	HORACADUSUARIO string
+	DECIMAISQTD    string
+	DECIMAISPRECO  string
+	ARREDONDA      string
+	NUMEROSERIE    string
+}
+
+type RegistroECF2 struct {
 	Seq         int    `json:"seq"`
 	Campo       string `json:"campo"`
 	Descricao   string `json:"descricao"`
@@ -10,8 +35,8 @@ type RegistroECF struct {
 	Value       string
 }
 
-func GetEcf(fields []string) []RegistroECF {
-	return []RegistroECF{
+func GetEcf2(fields []string) []RegistroECF2 {
+	return []RegistroECF2{
 		{Seq: 1, Campo: "TIPO", Descricao: "Tipo de registro, valor fixo.", Tipo: "A", Bytes: 3, Observacoes: "Fixo ECF", Value: fields[0]},
 		{Seq: 2, Campo: "CODLOJA", Descricao: "Código da loja no DJMonitor.", Tipo: "N", Bytes: 4, Observacoes: "", Value: fields[1]},
 		{Seq: 3, Campo: "CODTERMINAL", Descricao: "Código do terminal no DJMonitor.", Tipo: "N", Bytes: 4, Observacoes: "", Value: fields[2]},
@@ -34,5 +59,32 @@ func GetEcf(fields []string) []RegistroECF {
 		{Seq: 20, Campo: "DECIMAIS PRECO", Descricao: "Número máximo de casas decimais permitidas para o preço unitário.", Tipo: "N", Bytes: 1, Observacoes: "Ver nota 5.", Value: fields[19]},
 		{Seq: 21, Campo: "ARREDONDA", Descricao: "Flag indicando se o ECF faz arredondamento.", Tipo: "A", Bytes: 1, Observacoes: "Ver nota 6.", Value: fields[20]},
 		{Seq: 22, Campo: "NUMERO_SERIE", Descricao: "Número de série do ECF.", Tipo: "AN", Bytes: 30, Observacoes: "", Value: fields[21]},
+	}
+}
+
+func GetEcf(fields []string) RegistroECF {
+	return RegistroECF{
+		TIPO:           fields[0],
+		CODLOJA:        fields[1],
+		CODTERMINAL:    fields[2],
+		CODTERMINALEXT: fields[3],
+		CODECF:         fields[4],
+		NUMECF:         fields[5],
+		NUMLOJA:        fields[6],
+		NUMUSUARIO:     fields[7],
+		CRO:            fields[8],
+		MFADICIONAL:    fields[9],
+		MARCA:          fields[10],
+		CNIECF:         fields[11],
+		VERSAOSB:       fields[12],
+		DATASB:         fields[13],
+		HORASB:         fields[14],
+		CODEXTERNO:     fields[15],
+		DATACADUSUARIO: fields[16],
+		HORACADUSUARIO: fields[17],
+		DECIMAISQTD:    fields[18],
+		DECIMAISPRECO:  fields[19],
+		ARREDONDA:      fields[20],
+		NUMEROSERIE:    fields[21],
 	}
 }

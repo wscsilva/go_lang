@@ -1,6 +1,7 @@
 package services
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"log"
@@ -20,17 +21,98 @@ type Cupom struct {
 
 func GravarDocRV(DOC model.GetRegistrosRV) {
 
-	// Verificar se o cupom ja foi importado
-	cupom, err := getCupom(DOC)
+	// Consultar WSCUPOM
+	rows, err := consultarWSCupom(DOC)
 	if err != nil {
-		log.Println(err)
+		log.Fatalf("Erro na consulta: %s", err)
 	}
-	fmt.Println(cupom.NfceNumero)
+	defer rows.Close()
+	// Verificar se existem registros
+	if db.ExistemRegistro(rows) {
+		log.Println("Existem registros")
+		var cupom Cupom
+		err := rows.Scan(
+			&cupom.Cupom,
+			&cupom.Caixa,
+			&cupom.Data,
+			&cupom.Cancelado,
+			&cupom.NfceNumero,
+			&cupom.NfceSerie,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+	} else {
+		importarNFce(DOC)
+	}
 
 }
 
-// Retorna o cupom se existir
-func getCupom(DOC model.GetRegistrosRV) (Cupom, error) {
+func importarNFce(DOC model.GetRegistrosRV) (int64, error) {
+	sql := `
+		INSERT INTO rows (
+			cupom, 
+			caixa, 
+			"data", 
+			valor, 
+			cpf_cnpj, 
+			nome_cliente, 
+			cancelado, 
+			data_cancelamento, 
+			loja, 
+			desconto, 
+			dinheiro, 
+			acrescimo, 
+			cli_codigo, 
+			perc_desc, 
+			arquivo, 
+			perc_acrescimo, 
+			orc_codigo, 
+			itens_conferidos, 
+			observacao, 
+			nfce_modelo, 
+			nfce_tipo_emissao, 
+			nfce_numero, 
+			nfce_serie, 
+			nfce_chave_dfe, 
+			nfce_xml, 
+			coo, 
+			num_ecf, 
+			cod_terminal, 
+			cod_ecf, 
+			protocolo, 
+			vbc, 
+			vicms, 
+			vnf, 
+			vtottrib, 
+			val_base_icms, 
+			val_icms, 
+			baixou_estoque, 
+			tip_cancelamento
+		)
+		VALUES (
+			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38
+		);
+	`
+	registros, err := db.ExecutarConsulta(sql,
+		DOC.COO,
+		DOC.CODECF,
+		DOC.DATA_FIM,
+		DOC.SUBTOTAL,
+		DOC.DOCUMENTO_CLI,
+		DOC.NOME_CLI,
+		DOC.CANCELADO,
+		DOC.DATA_FIM,
+	)
+	if err != nil {
+		return registros, err
+	}
+	fmt.Printf("NFCe número: %s com a Série: %s importado com sucesso.", DOC.NUMERO, DOC.SERIE)
+	return registros, nil
+}
+
+// Retorna error se o cupom  existir
+func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
 	sql := `
         select 
             c.cupom ,
@@ -43,46 +125,35 @@ func getCupom(DOC model.GetRegistrosRV) (Cupom, error) {
         where c.nfce_numero = $1
         and c.nfce_serie = $2    
     `
-	/* 	connection, err := db.ConectarBancoDeDados()
-	   	if err != nil {
-	   		return Cupom{}, err
-	   	}
-	   	defer db.FecharConexao(connection)
-
-
-
-	   	// Execute a consulta
-	   	rows, err := connection.Query(sql, DOC.NUMERO, DOC.SERIE) */
 
 	// Verifique se os parâmetros são válidos
 	if DOC.NUMERO == "" || DOC.SERIE == "" {
-		return Cupom{}, errors.New("parâmetros inválidos")
+		return nil, errors.New("parâmetros inválidos")
 	}
-	rows, err := db.ExecuteQuery(sql, DOC.NUMERO, DOC.SERIE)
+
+	rows, err := db.AbrirConsulta(sql, DOC.NUMERO, DOC.SERIE)
 	if err != nil {
-		return Cupom{}, err
+		return nil, err
 	}
-	defer rows.Close()
+	/* 	var cupom Cupom
+	   	///defer rows.Close()
 
-	if rows.Next() {
-		return Cupom{}, fmt.Errorf("NFCe número: %s com a Série: %s já cadastrado no sistema", DOC.NUMERO, DOC.SERIE)
+	   	if db.ExistemRegistro(rows) {
+	   		err := rows.Scan(
+	   			&cupom.Cupom,
+	   			&cupom.Caixa,
+	   			&cupom.Data,
+	   			&cupom.Cancelado,
+	   			&cupom.NfceNumero,
+	   			&cupom.NfceSerie,
+	   		)
+	   		if err != nil {
+	   			return rows, err
+	   		}
 
-	}
+	   		fmt.Println(cupom.Caixa)
+	   		return rows, fmt.Errorf("NFCe número: %s com a Série: %s já cadastrado no sistema", DOC.NUMERO, DOC.SERIE)
+	   	} */
 
-	// Retorne o cupom
-	var cupom Cupom
-
-	err = rows.Scan(
-		&cupom.Cupom,
-		&cupom.Caixa,
-		&cupom.Data,
-		&cupom.Cancelado,
-		&cupom.NfceNumero,
-		&cupom.NfceSerie,
-	)
-	if err != nil {
-		return Cupom{}, err
-	}
-
-	return cupom, nil
+	return rows, nil
 }
