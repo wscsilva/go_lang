@@ -1,3 +1,5 @@
+// Package db
+// Responsável por fazer acesso ao banco de dados postgres
 package services
 
 import (
@@ -30,7 +32,6 @@ func GravarDocRV(DOC model.GetRegistrosRV) {
 
 	// Verificar se existem registros
 	if db.ExistemRegistros(rows) {
-		log.Println("Existem registros")
 		var cupom Cupom
 		err := rows.Scan(
 			&cupom.Cupom,
@@ -43,15 +44,20 @@ func GravarDocRV(DOC model.GetRegistrosRV) {
 		if err != nil {
 			log.Println(err)
 		}
+		log.Printf("NFCe: %s, Série: %s ja importado no sistema", cupom.NfceNumero, cupom.NfceSerie)
 	} else {
-		importarNFce(DOC)
+		reg, err := importarNFce(DOC)
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println(reg)
 	}
 
 }
 
 func importarNFce(DOC model.GetRegistrosRV) (int64, error) {
 	sql := `
-		INSERT INTO rows (
+		INSERT INTO wscupom (
 			cupom, 
 			caixa, 
 			"data", 
@@ -112,8 +118,8 @@ func importarNFce(DOC model.GetRegistrosRV) (int64, error) {
 	return registros, nil
 }
 
-// Consulta WSCUPOM
-// Retorna um ResultSet
+// consultarWSCupom
+// Consulta a tabela wscupom.
 func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
 	sql := `
         select 
@@ -131,7 +137,7 @@ func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
 	if DOC.NUMERO == "" || DOC.SERIE == "" {
 		return nil, errors.New("parâmetros inválidos")
 	}
-
+	// Retorna as linhas da consulta.
 	rows, err := db.AbrirConsulta(sql, DOC.NUMERO, DOC.SERIE)
 	if err != nil {
 		return nil, err
