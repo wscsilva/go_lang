@@ -1,10 +1,7 @@
 package services
 
 import (
-	"database/sql"
-	"log"
-
-	"nfceimport/db"
+	"fmt"
 )
 
 type Loja struct {
@@ -31,18 +28,11 @@ func GetLoja() (Loja, error) {
         from wsloja l
         where l.loj_emite_nfce = 'S'
     `
-	connection := getConection()
 
-	defer connection.Close()
-
-	rows, err := connection.Query(sqlGetParams)
-	if err != nil {
-		return Loja{}, err
-	}
-	defer rows.Close()
+	fmt.Println(sqlGetParams)
 
 	var param Loja
-	for rows.Next() {
+	/* 	for rows.Next() {
 		err := rows.Scan(
 			&param.LojCodigo,
 			&param.LojRazSocial,
@@ -55,16 +45,12 @@ func GetLoja() (Loja, error) {
 		if err != nil {
 			return Loja{}, err
 		}
-	}
-
-	if rows.Err() != nil {
-		return Loja{}, rows.Err()
-	}
+	} */
 
 	return param, nil
 }
 
-func GetLoja2() Loja {
+func GetLoja2() {
 	sqlGetParams := `
 		select 
 			l.loj_codigo ,
@@ -77,40 +63,11 @@ func GetLoja2() Loja {
 		from wsloja l
 		where l.loj_emite_nfce = 'S'
 	`
-	connection := getConection()
-	rows, err := connection.Query(sqlGetParams)
-	if err != nil {
-		log.Fatalf("Erro ao abrir a consulta: %v", err)
-	}
-	defer rows.Close()
-	db.FecharConexao(connection)
-
-	var param Loja
-	//var params []Loja
-	for rows.Next() {
-		err := rows.Scan(
-			&param.LojCodigo,
-			&param.LojRazSocial,
-			&param.LojEmiteNfce,
-			&param.CupomBaixaEstoquePedido,
-			&param.CupomBaixaEstoque,
-			&param.LojCupomReprocessarFinanc,
-			&param.LojCnpj,
-		)
-		if err != nil {
-			log.Fatalf("Erro aopopular Loja: %v", err)
-		}
-		//params = append(params, param)
-	}
-
-	return param
-}
-
-func getConection() *sql.DB {
-	connection, err := db.ConectarBancoDeDados()
-	if err != nil {
-		log.Fatalf("Erro ao abrir a conexão: %v", err)
-	}
-
-	return connection
+	/* 	connection := getConection()
+	   	rows, err := connection.Query(sqlGetParams)
+	   	if err != nil {
+	   		log.Fatalf("Erro ao abrir a consulta: %v", err)
+	   	}
+	   	defer rows.Close() */
+	fmt.Println(sqlGetParams)
 }

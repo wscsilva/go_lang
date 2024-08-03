@@ -27,8 +27,9 @@ func GravarDocRV(DOC model.GetRegistrosRV) {
 		log.Fatalf("Erro na consulta: %s", err)
 	}
 	defer rows.Close()
+
 	// Verificar se existem registros
-	if db.ExistemRegistro(rows) {
+	if db.ExistemRegistros(rows) {
 		log.Println("Existem registros")
 		var cupom Cupom
 		err := rows.Scan(
@@ -94,7 +95,7 @@ func importarNFce(DOC model.GetRegistrosRV) (int64, error) {
 			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38
 		);
 	`
-	registros, err := db.ExecutarConsulta(sql,
+	registros, err := db.ExecutarComandos(sql,
 		DOC.COO,
 		DOC.CODECF,
 		DOC.DATA_FIM,
@@ -111,7 +112,8 @@ func importarNFce(DOC model.GetRegistrosRV) (int64, error) {
 	return registros, nil
 }
 
-// Retorna error se o cupom  existir
+// Consulta WSCUPOM
+// Retorna um ResultSet
 func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
 	sql := `
         select 
@@ -125,7 +127,6 @@ func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
         where c.nfce_numero = $1
         and c.nfce_serie = $2    
     `
-
 	// Verifique se os parâmetros são válidos
 	if DOC.NUMERO == "" || DOC.SERIE == "" {
 		return nil, errors.New("parâmetros inválidos")
@@ -135,25 +136,6 @@ func consultarWSCupom(DOC model.GetRegistrosRV) (*sql.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-	/* 	var cupom Cupom
-	   	///defer rows.Close()
-
-	   	if db.ExistemRegistro(rows) {
-	   		err := rows.Scan(
-	   			&cupom.Cupom,
-	   			&cupom.Caixa,
-	   			&cupom.Data,
-	   			&cupom.Cancelado,
-	   			&cupom.NfceNumero,
-	   			&cupom.NfceSerie,
-	   		)
-	   		if err != nil {
-	   			return rows, err
-	   		}
-
-	   		fmt.Println(cupom.Caixa)
-	   		return rows, fmt.Errorf("NFCe número: %s com a Série: %s já cadastrado no sistema", DOC.NUMERO, DOC.SERIE)
-	   	} */
 
 	return rows, nil
 }

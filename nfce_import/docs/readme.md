@@ -61,3 +61,17 @@ defer file.Close()
 - Erro: Query é utilizado para executar consultas SQL que retornam múltiplos resultados, enquanto o método Scan é utilizado para ler os resultados de uma consulta que retorna apenas um resultado. No entanto, no seu código, você está utilizando o método Query para executar a consulta e, em seguida, está tentando ler os resultados com o método Scan.
 
 - Solução: Para resolver esse problema, você pode utilizar o método QueryRow em vez de Query. O método QueryRow é utilizado para executar consultas SQL que retornam apenas um resultado e é compatível com o método Scan.
+
+### Ciclo de inicialização do GO
+- O init() é uma função especial em Go que é executada automaticamente quando o pacote é carregado. Isso significa que o init() é executado antes de qualquer outra função do pacote ser chamada.
+
+No caso do seu código, o init() é executado quando o pacote db é carregado, o que ocorre quando o programa Go é iniciado.
+
+Aqui está a ordem em que as coisas acontecem:
+
+O programa Go é iniciado.
+O pacote db é carregado.
+O init() do pacote db é executado.
+O init() estabelece a conexão com o banco de dados.
+O programa Go continua a executar, e as funções do pacote db podem ser chamadas.
+É importante notar que o init() é executado apenas uma vez, quando o pacote é carregado. Se você tiver várias funções init() em diferentes pacotes, elas serão executadas em ordem, começando com o pacote principal.

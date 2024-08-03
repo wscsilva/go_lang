@@ -15,35 +15,22 @@ const (
 	dbname   = "quintel"
 )
 
-func ConectarBancoDeDados() (*sql.DB, error) {
+var db *sql.DB
+
+func init() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
-
-	db, err := sql.Open("postgres", psqlInfo)
+	var err error
+	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-
-	err = db.Ping()
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Println("Conexão com o banco de dados estabelecida!")
-	return db, nil
 }
 
-func FecharConexao(db *sql.DB) {
-	db.Close()
-	fmt.Println("Conexão com o banco de dados finalizada!")
-}
-
+// Returna um ResultSet
 func AbrirConsulta(consulta string, params ...interface{}) (*sql.Rows, error) {
-	connection, err := ConectarBancoDeDados()
-	if err != nil {
-		return nil, err
-	}
-	stmt, err := connection.Prepare(consulta)
+
+	stmt, err := db.Prepare(consulta)
 	if err != nil {
 		return nil, err
 	}
@@ -57,12 +44,9 @@ func AbrirConsulta(consulta string, params ...interface{}) (*sql.Rows, error) {
 	return rows, nil
 }
 
-func ExecutarConsulta(comando string, params ...interface{}) (int64, error) {
-	connection, err := ConectarBancoDeDados()
-	if err != nil {
-		return 0, err
-	}
-	stmt, err := connection.Prepare(comando)
+func ExecutarComandos(comando string, params ...interface{}) (int64, error) {
+
+	stmt, err := db.Prepare(comando)
 	if err != nil {
 		return 0, err
 	}
@@ -81,10 +65,6 @@ func ExecutarConsulta(comando string, params ...interface{}) (int64, error) {
 	return rowsAfetadas, nil
 }
 
-func ExistemRegistro(stmt *sql.Rows) bool {
-	if stmt.Next() {
-		return true
-	} else {
-		return false
-	}
+func ExistemRegistros(rows *sql.Rows) bool {
+	return rows.Next()
 }
